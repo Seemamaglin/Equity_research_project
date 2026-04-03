@@ -76,34 +76,31 @@ if process:
         st.success("Processing completed!")
 
 # Ask question
+# Ask question
 if query and st.session_state.get("qa_chain"):
     st.text("Calling LLM... ⏳")
 
     try:
-        response = st.session_state.qa_chain.invoke({"query": query})
-
-        # DEBUG
-        st.write("DEBUG RESPONSE:", response)
+        response = st.session_state.qa_chain.invoke(query)
 
         st.subheader("Answer:")
 
-        if "result" in response:
-            st.write(response["result"])
-        elif "answer" in response:
-            st.write(response["answer"])
+        # Handle both string and dict responses
+        if isinstance(response, str):
+            st.write(response)
+
+        elif isinstance(response, dict):
+            if "result" in response:
+                st.write(response["result"])
+            elif "answer" in response:
+                st.write(response["answer"])
+            else:
+                # Print all keys for debugging
+                st.write("⚠️ Unexpected response format")
+                st.write(response)
+
         else:
-            st.write("⚠️ No answer returned")
-
-        st.subheader("Sources:")
-
-        if "source_documents" in response:
-            for doc in response["source_documents"]:
-                source = doc.metadata.get("source", "Unknown")
-
-                if source != "Unknown":
-                    st.markdown(f"[{source}]({source})")  # ✅ clickable link
-                else:
-                    st.write("Unknown")
+            st.write(str(response))
 
     except Exception as e:
         st.error(f"Error: {e}")
