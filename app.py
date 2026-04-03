@@ -1,6 +1,5 @@
 import streamlit as st
 
-# ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(layout="wide")
 
 import os
@@ -28,7 +27,7 @@ url3 = st.sidebar.text_input("URL 3")
 process = st.sidebar.button("Process URLs")
 
 # Main UI
-st.title("📈 News Research Tool")
+st.title("📈 Equity Research Tool")
 
 query = st.text_input("Question:")
 
